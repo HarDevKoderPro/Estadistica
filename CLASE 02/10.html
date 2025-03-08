@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frecuencia Relativa</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+
+    .slide {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+      width: 80%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .text {
+      font-size: 18px;
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .text ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .text li {
+      margin-bottom: 15px;
+      padding-left: 30px;
+      position: relative;
+    }
+
+    .text li::before {
+      content: '\1F4C8';
+      /* Emoji de gráfico */
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-size: 18px;
+    }
+
+    .text li strong {
+      font-weight: bold;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #ffffff;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid #b0b0b0;
+      margin-bottom: 20px;
+    }
+
+    th,
+    td {
+      border: 1px solid #b0b0b0;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      /* Cambia el cursor al pasar sobre las celdas */
+    }
+
+    th {
+      background: #4CAF50;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background: #e8f5e9;
+    }
+
+    tr:nth-child(odd) {
+      background: #f0f0f0;
+    }
+
+    .highlight {
+      border: 2px solid red !important;
+      /* Resaltado rojo */
+      background-color: #ffe6e6;
+      /* Fondo claro para resaltar */
+    }
+
+    .buttons {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .buttons a {
+      text-decoration: none;
+      background: #007BFF;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        height: auto;
+        min-height: 100vh;
+        padding: 10px 0;
+        display: block;
+      }
+
+      .slide {
+        width: 90%;
+        margin: auto;
+        min-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-bottom: 10px;
+      }
+
+      .content {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      table {
+        width: 95%;
+      }
+
+      .buttons {
+        margin-top: 10px;
+        padding-bottom: 5px;
+      }
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Seleccionar todas las celdas de la tabla (excluyendo las cabeceras)
+      const cells = document.querySelectorAll("td");
+
+      // Agregar evento de clic a cada celda
+      cells.forEach(cell => {
+        cell.addEventListener("click", function () {
+          this.classList.toggle("highlight"); // Alternar la clase highlight
+        });
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <div class="slide">
+    <div class="title">Frecuencia Relativa</div>
+    <div class="content">
+      <div class="text">
+        <ul>
+          <li>La <strong>frecuencia relativa (fr)</strong> es la proporción de veces que ocurre un valor en un conjunto
+            de
+            datos.</li>
+          <li>Se calcula como:
+            <br>
+            <strong>fr = Frecuencia absoluta (f) / Total de datos (n)</strong>
+          </li>
+          <li>El <strong>porcentaje</strong> se obtiene multiplicando la frecuencia relativa por 100:
+            <br>
+            <strong>% = fr * 100</strong>
+          </li>
+        </ul>
+      </div>
+      <table>
+        <tr>
+          <th>Valor (x)</th>
+          <th>Frecuencia (f)</th>
+          <th>Frecuencia Relativa (fr)</th>
+          <th>% (fr * 100)</th>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td>2</td>
+          <td>0.2</td>
+          <td>20%</td>
+        </tr>
+        <tr>
+          <td>15</td>
+          <td>3</td>
+          <td>0.3</td>
+          <td>30%</td>
+        </tr>
+        <tr>
+          <td>20</td>
+          <td>4</td>
+          <td>0.4</td>
+          <td>40%</td>
+        </tr>
+        <tr>
+          <td>25</td>
+          <td>1</td>
+          <td>0.1</td>
+          <td>10%</td>
+        </tr>
+        <tr>
+          <td><strong>Total</strong></td>
+          <td><strong>10</strong></td>
+          <td><strong>1.0</strong></td>
+          <td><strong>100%</strong></td>
+        </tr>
+      </table>
+    </div>
+    <div class="buttons">
+      <a href="./09.html">Atrás</a>
+      <a href="./11.html">Siguiente</a>
+    </div>
+  </div>
+</body>
+
+</html>

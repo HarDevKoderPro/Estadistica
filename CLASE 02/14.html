@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tarea: Aparcamiento</title>
+  <link rel="shortcut icon" href="./Code.ico" type="image/x-icon">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+
+    .slide {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+      width: 80%;
+      max-width: 800px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      position: sticky;
+      top: 0;
+      background: white;
+      z-index: 1;
+      padding: 10px 0;
+      width: 100%;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      overflow-y: auto;
+      flex-grow: 1;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #ffffff;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid #b0b0b0;
+      margin-bottom: 20px;
+      table-layout: fixed;
+    }
+
+    th,
+    td {
+      border: 1px solid #b0b0b0;
+      padding: 6px;
+      text-align: center;
+      font-size: 14px;
+      vertical-align: middle;
+      /* Centrar verticalmente el contenido */
+    }
+
+    th {
+      background: #4CAF50;
+      color: white;
+      font-size: 16px;
+    }
+
+    tr:nth-child(even) {
+      background: #e8f5e9;
+    }
+
+    tr:nth-child(odd) {
+      background: #f0f0f0;
+    }
+
+    /* Ajustar el ancho de las columnas */
+    th:nth-child(1),
+    td:nth-child(1) {
+      width: 10%;
+    }
+
+    th:nth-child(2),
+    td:nth-child(2) {
+      width: 15%;
+    }
+
+    th:nth-child(3),
+    td:nth-child(3) {
+      width: 15%;
+    }
+
+    th:nth-child(4),
+    td:nth-child(4) {
+      width: 15%;
+    }
+
+    th:nth-child(5),
+    td:nth-child(5) {
+      width: 15%;
+    }
+
+    th:nth-child(6),
+    td:nth-child(6) {
+      width: 15%;
+    }
+
+    /* Centrar los inputs dentro de las celdas */
+    td input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 4px;
+      font-size: 12px;
+      border: 1px solid #b0b0b0;
+      border-radius: 4px;
+      text-align: center;
+      /* Centrar el texto dentro del input */
+    }
+
+    .results {
+      width: 100%;
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    .results div {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+    }
+
+    .results input {
+      margin-left: 10px;
+      padding: 5px;
+      border: 1px solid #b0b0b0;
+      border-radius: 5px;
+      width: 80px;
+      font-size: 12px;
+    }
+
+    .buttons {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .buttons button {
+      background: #007BFF;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .buttons button:hover {
+      background: #005bb5;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        height: auto;
+        min-height: 100vh;
+        padding: 10px 0;
+        display: block;
+      }
+
+      .slide {
+        width: 98%;
+        margin: auto;
+        min-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-bottom: 10px;
+      }
+
+      .content {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      table {
+        width: 100%;
+      }
+
+      th,
+      td {
+        padding: 6px;
+        font-size: 12px;
+      }
+
+      input {
+        font-size: 10px;
+      }
+
+      .results input {
+        width: 70px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="slide">
+    <div class="title">Tarea: Aparcamiento</div>
+    <div class="content">
+      <table>
+        <thead>
+          <tr>
+            <th>x</th>
+            <th>f</th>
+            <th>F</th>
+            <th>x·f</th>
+            <th>fr</th>
+            <th>%</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- 7 filas para datos -->
+          <tr>
+            <td><input type="text" class="x"></td>
+            <td><input type="text" class="f"></td>
+            <td><input type="text" class="F"></td>
+            <td><input type="text" class="xf"></td>
+            <td><input type="text" class="fr"></td>
+            <td><input type="text" class="percent"></td>
+          </tr>
+          <tr>
+            <td><input type="text" class="x"></td>
+            <td><input type="text" class="f"></td>
+            <td><input type="text" class="F"></td>
+            <td><input type="text" class="xf"></td>
+            <td><input type="text" class="fr"></td>
+            <td><input type="text" class="percent"></td>
+          </tr>
+          <tr>
+            <td><input type="text" class="x"></td>
+            <td><input type="text" class="f"></td>
+            <td><input type="text" class="F"></td>
+            <td><input type="text" class="xf"></td>
+            <td><input type="text" class="fr"></td>
+            <td><input type="text" class="percent"></td>
+          </tr>
+          <tr>
+            <td><input type="text" class="x"></td>
+            <td><input type="text" class="f"></td>
+            <td><input type="text" class="F"></td>
+            <td><input type="text" class="xf"></td>
+            <td><input type="text" class="fr"></td>
+            <td><input type="text" class="percent"></td>
+          </tr>
+          <tr>
+            <td><input type="text" class="x"></td>
+            <td><input type="text" class="f"></td>
+            <td><input type="text" class="F"></td>
+            <td><input type="text" class="xf"></td>
+            <td><input type="text" class="fr"></td>
+            <td><input type="text" class="percent"></td>
+          </tr>
+          <tr>
+            <td><input type="text" class="x"></td>
+            <td><input type="text" class="f"></td>
+            <td><input type="text" class="F"></td>
+            <td><input type="text" class="xf"></td>
+            <td><input type="text" class="fr"></td>
+            <td><input type="text" class="percent"></td>
+          </tr>
+          <tr>
+            <td><input type="text" class="x"></td>
+            <td><input type="text" class="f"></td>
+            <td><input type="text" class="F"></td>
+            <td><input type="text" class="xf"></td>
+            <td><input type="text" class="fr"></td>
+            <td><input type="text" class="percent"></td>
+          </tr>
+          <!-- Fila de totales -->
+          <tr>
+            <td><strong>Total</strong></td>
+            <td><input type="text" class="f-total"></td>
+            <td></td>
+            <td><input type="text" class="xf-total"></td>
+            <td><input type="text" class="fr-total"></td>
+            <td><input type="text" class="percent-total"></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="results">
+        <div>Media: <input type="text" id="media" maxlength="6"></div>
+        <div>Mediana: <input type="text" id="mediana" maxlength="6"></div>
+        <div>Moda: <input type="text" id="moda" maxlength="6"></div>
+      </div>
+    </div>
+    <div class="buttons">
+      <button onclick="window.location.href='./13.html'">Atrás</button>
+      <button onclick="enviarTarea()">Enviar</button>
+    </div>
+  </div>
+
+  <script>
+    function enviarTarea() {
+      // Solicitar el nombre del estudiante
+      const nombre = prompt("Por favor, ingresa tu nombre:");
+      if (!nombre) {
+        alert("Debes ingresar tu nombre para continuar.");
+        return;
+      }
+
+      // Capturar los datos de la tabla
+      const xValues = [];
+      const fValues = [];
+      const FValues = [];
+      const xfValues = [];
+      const frValues = [];
+      const percentValues = [];
+
+      const filas = document.querySelectorAll("tbody tr");
+      filas.forEach((fila, index) => {
+        if (index < 7) { // Solo las primeras 7 filas de datos
+          xValues.push(fila.querySelector(".x").value);
+          fValues.push(fila.querySelector(".f").value);
+          FValues.push(fila.querySelector(".F").value);
+          xfValues.push(fila.querySelector(".xf").value);
+          frValues.push(fila.querySelector(".fr").value);
+          percentValues.push(fila.querySelector(".percent").value);
+        }
+      });
+
+      // Capturar los totales
+      const totalF = document.querySelector(".f-total").value;
+      const totalXf = document.querySelector(".xf-total").value;
+      const totalFr = document.querySelector(".fr-total").value;
+      const totalPercent = document.querySelector(".percent-total").value;
+
+      // Capturar los resultados de media, mediana y moda
+      const media = document.getElementById("media").value;
+      const mediana = document.getElementById("mediana").value;
+      const moda = document.getElementById("moda").value;
+
+      // Formatear los datos de la tabla
+      const formatoTabla = `
+x: ${xValues.join(", ")}
+f: ${fValues.join(", ")}
+F: ${FValues.join(", ")}
+x·f: ${xfValues.join(", ")}
+fr: ${frValues.join(", ")}
+%: ${percentValues.join(", ")}
+      `.trim();
+
+      // Crear el contenido del archivo
+      let contenido = `Nombre del estudiante: ${nombre}\n\n`;
+      contenido += "Datos de la tabla:\n";
+      contenido += formatoTabla;
+      contenido += `\n\nTotales: f=${totalF}, x·f=${totalXf}, fr=${totalFr}, %=${totalPercent}\n\n`;
+      contenido += `Media: ${media}\n`;
+      contenido += `Mediana: ${mediana}\n`;
+      contenido += `Moda: ${moda}\n`;
+
+      // Crear y descargar el archivo
+      const blob = new Blob([contenido], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "tarea.txt";
+      a.click();
+      URL.revokeObjectURL(url);
+
+      // Redirigir al usuario
+      window.location.href = "../index.html";
+    }
+  </script>
+</body>
+
+</html>

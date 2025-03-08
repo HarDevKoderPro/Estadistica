@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Población Estadística</title>
+  <title>La Media</title>
+  <link rel="shortcut icon" href="../Code.ico" type="image/x-icon">
   <style>
     * {
       margin: 0;
@@ -60,8 +61,8 @@
     }
 
     .image::before {
-      content: '\1F465';
-      /* Emoji de grupo de personas */
+      content: '\1F4C8';
+      /* Emoji de gráfico de tendencias */
       font-size: 100px;
       color: white;
     }
@@ -79,24 +80,12 @@
 
     .text li {
       margin-bottom: 15px;
-      /* Mayor separación entre elementos */
-      padding-left: 30px;
-      /* Espacio para la viñeta */
-      position: relative;
-    }
-
-    .text li::before {
-      content: '\1F4C8';
-      /* Emoji de gráfico */
-      position: absolute;
-      left: 0;
-      top: 0;
-      font-size: 18px;
     }
 
     .text li strong {
-      font-weight: bold;
-      /* Resalta el texto en negrita */
+      display: block;
+      font-size: 20px;
+      margin-bottom: 5px;
     }
 
     .buttons {
@@ -112,6 +101,13 @@
       color: white;
       padding: 10px 20px;
       border-radius: 5px;
+    }
+
+    .highlight {
+      border: 2px solid red;
+      padding: 2px 5px;
+      border-radius: 5px;
+      display: inline-block;
     }
 
     @media (max-width: 600px) {
@@ -152,26 +148,51 @@
       }
     }
   </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Seleccionar los contenedores de los resultados de la media
+      const mediaContainers = document.querySelectorAll(".media-container");
+
+      // Añadir evento de clic a cada contenedor
+      mediaContainers.forEach(container => {
+        container.addEventListener("click", function () {
+          this.classList.toggle("highlight"); // Alternar la clase highlight
+        });
+      });
+    });
+  </script>
 </head>
 
 <body>
   <div class="slide">
-    <div class="title">Población Estadística</div>
+    <div class="title">La Media</div>
     <div class="content">
       <div class="image"></div>
       <div class="text">
         <ul>
-          <li>La población estadística es el conjunto total de elementos que se analizan en un estudio.
+          <li>
+            <strong>Definición:</strong>
+            La media es el valor promedio de un conjunto de números. Se calcula sumando todos los valores y dividiendo
+            entre el número total de elementos.
           </li>
-          <li><strong>Ejemplo:</strong> Todos los estudiantes de una universidad.</li>
-          <li><strong>Ejemplo:</strong> Todos los clientes de un supermercado en un mes.</li>
-          <li><strong>Ejemplo:</strong> Todos los dispositivos móviles vendidos en un año.</li>
+          <li>
+            <strong>Ejemplo 1:</strong>
+            <br>Datos: [10, 20, 30, 40, 50, 60, 70]
+            <br>Cálculo: (10 + 20 + 30 + 40 + 50 + 60 + 70) / 7 = 40
+            <br><span class="media-container">Media: <strong>40</strong></span>
+          </li>
+          <li>
+            <strong>Ejemplo 2:</strong>
+            <br>Datos: [5, 15, 25, 35, 45, 55, 65]
+            <br>Cálculo: (5 + 15 + 25 + 35 + 45 + 55 + 65) / 7 = 35
+            <br><span class="media-container">Media: <strong>35</strong></span>
+          </li>
         </ul>
       </div>
     </div>
     <div class="buttons">
-      <a href="./01.html">Atrás</a>
-      <a href="./03.html">Siguiente</a>
+      <a href="./02.html">Atrás</a>
+      <a href="./04.html">Siguiente</a>
     </div>
   </div>
 </body>

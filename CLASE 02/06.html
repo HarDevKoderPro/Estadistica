@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ejercicio de Encuesta Estadística</title>
+  <link rel="shortcut icon" href="./Code.ico" type="image/x-icon">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+
+    .slide {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+      width: 80%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .data-container {
+      font-size: 18px;
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .data-container span {
+      cursor: pointer;
+    }
+
+    .results {
+      font-size: 18px;
+      text-align: left;
+      width: 100%;
+    }
+
+    .results strong {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+
+    .highlight {
+      border: 2px solid red;
+      padding: 2px 5px;
+      border-radius: 5px;
+      display: inline-block;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .buttons {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .buttons a {
+      text-decoration: none;
+      background: #007BFF;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        height: auto;
+        min-height: 100vh;
+        padding: 10px 0;
+        display: block;
+      }
+
+      .slide {
+        width: 90%;
+        margin: auto;
+        min-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-bottom: 10px;
+      }
+
+      .content {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .data-container,
+      .results {
+        width: 100%;
+      }
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const dataset = [15, 10, 20, 25, 15, 30, 20, 15, 10];
+      const originalDataset = [...dataset]; // Copia del conjunto original
+      const dataContainer = document.querySelector(".data-container");
+      const mediaResult = document.getElementById("media-result");
+      const medianaResult = document.getElementById("mediana-result");
+      const modaResult = document.getElementById("moda-result");
+
+      let isSorted = false;
+
+      // Mostrar datos desordenados inicialmente
+      dataContainer.innerHTML = `Datos de la encuesta: [<span id="data-values">${dataset.join(", ")}</span>]`;
+
+      // Función para alternar entre ordenar y desordenar los datos
+      document.getElementById("data-values").addEventListener("click", function () {
+        if (isSorted) {
+          // Desordenar los datos (restaurar al original)
+          dataset.sort(() => Math.random() - 0.5);
+        } else {
+          // Ordenar de menor a mayor
+          dataset.sort((a, b) => a - b);
+        }
+        isSorted = !isSorted;
+        // Actualizar solo los datos, manteniendo el enunciado
+        document.getElementById("data-values").textContent = dataset.join(", ");
+      });
+
+      // Función para calcular la media
+      document.querySelector(".media").addEventListener("click", function () {
+        const sum = dataset.reduce((a, b) => a + b, 0);
+        const media = (sum / dataset.length).toFixed(2);
+        mediaResult.innerHTML = `
+          Desarrollo: Suma = ${sum}, Cantidad de datos = ${dataset.length}<br>
+          Media = Suma / Cantidad = ${sum} / ${dataset.length} = <span class="highlight">${media}</span>
+        `;
+        mediaResult.classList.toggle("hidden");
+      });
+
+      // Función para calcular la mediana
+      document.querySelector(".mediana").addEventListener("click", function () {
+        const sortedData = [...dataset].sort((a, b) => a - b);
+        const n = sortedData.length;
+        const mid = Math.floor(n / 2);
+        let mediana;
+        let valoresElegidos = [];
+
+        if (n % 2 !== 0) {
+          mediana = sortedData[mid];
+          valoresElegidos = [sortedData[mid]];
+        } else {
+          mediana = ((sortedData[mid - 1] + sortedData[mid]) / 2).toFixed(2);
+          valoresElegidos = [sortedData[mid - 1], sortedData[mid]];
+        }
+
+        // Resaltar los valores elegidos en los datos ordenados
+        const datosResaltados = sortedData.map((num, index) => {
+          if (valoresElegidos.includes(num)) {
+            return `<span class="highlight">${num}</span>`;
+          }
+          return num;
+        }).join(", ");
+
+        medianaResult.innerHTML = `
+          Datos ordenados: [${datosResaltados}]<br>
+          Número total de datos (n): ${n} (${n % 2 === 0 ? "par" : "impar"})<br>
+          Mediana = <span class="highlight">${mediana}</span>
+        `;
+        medianaResult.classList.toggle("hidden");
+      });
+
+      // Función para calcular la moda
+      document.querySelector(".moda").addEventListener("click", function () {
+        const sortedData = [...dataset].sort((a, b) => a - b);
+        const frequency = {};
+        dataset.forEach(num => frequency[num] = (frequency[num] || 0) + 1);
+        const maxFreq = Math.max(...Object.values(frequency));
+        const modas = Object.keys(frequency).filter(num => frequency[num] === maxFreq);
+        let tipoModa = "";
+        if (modas.length === 1) {
+          tipoModa = "Unimodal";
+        } else if (modas.length === 2) {
+          tipoModa = "Bimodal";
+        } else {
+          tipoModa = "Multimodal";
+        }
+
+        // Resaltar los valores de la moda en los datos ordenados
+        const datosResaltados = sortedData.map((num) => {
+          if (modas.includes(num.toString())) {
+            return `<span class="highlight">${num}</span>`;
+          }
+          return num;
+        }).join(", ");
+
+        modaResult.innerHTML = `
+          Datos ordenados: [${datosResaltados}]<br>
+          Moda(s): <span class="highlight">${modas.join(", ")}</span><br>
+          Tipo de moda: <span class="highlight">${tipoModa}</span>
+        `;
+        modaResult.classList.toggle("hidden");
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <div class="slide">
+    <div class="title">Ejercicio de Encuesta Estadística</div>
+    <div class="content">
+      <div class="data-container"></div>
+      <div class="results">
+        <strong class="media">Media</strong>
+        <div id="media-result" class="hidden"></div>
+        <strong class="mediana">Mediana</strong>
+        <div id="mediana-result" class="hidden"></div>
+        <strong class="moda">Moda</strong>
+        <div id="moda-result" class="hidden"></div>
+      </div>
+    </div>
+    <div class="buttons">
+      <a href="./05.html">Atrás</a>
+      <a href="./07.html">Siguiente</a>
+    </div>
+  </div>
+</body>
+
+</html>

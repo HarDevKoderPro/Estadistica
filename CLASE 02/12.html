@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medidas de Tendencia Central (Datos Impares)</title>
+  <link rel="shortcut icon" href="./Code.ico" type="image/x-icon">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+
+    .slide {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+      width: 80%;
+      max-width: 800px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      position: sticky;
+      top: 0;
+      background: white;
+      z-index: 1;
+      padding: 10px 0;
+      width: 100%;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      overflow-y: auto;
+      flex-grow: 1;
+    }
+
+    .data-container {
+      font-size: 18px;
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .data-container span {
+      cursor: pointer;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #ffffff;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid #b0b0b0;
+      margin-bottom: 20px;
+    }
+
+    th,
+    td {
+      border: 1px solid #b0b0b0;
+      padding: 8px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    th {
+      background: #4CAF50;
+      color: white;
+      font-size: 16px;
+    }
+
+    tr:nth-child(even) {
+      background: #e8f5e9;
+    }
+
+    tr:nth-child(odd) {
+      background: #f0f0f0;
+    }
+
+    .cell-content {
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+    }
+
+    .highlight {
+      border: 2px solid red;
+      padding: 5px 10px;
+      display: inline-block;
+      background-color: #ffe6e6;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .results {
+      width: 100%;
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    .results div {
+      margin-bottom: 10px;
+    }
+
+    .results strong {
+      font-weight: bold;
+    }
+
+    .buttons {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .buttons a {
+      text-decoration: none;
+      background: #007BFF;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        height: auto;
+        min-height: 100vh;
+        padding: 10px 0;
+        display: block;
+      }
+
+      .slide {
+        width: 95%;
+        margin: auto;
+        min-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-bottom: 10px;
+      }
+
+      .content {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      table {
+        width: 95%;
+      }
+
+      th,
+      td {
+        padding: 6px;
+        font-size: 12px;
+      }
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const dataset = [15, 10, 20, 25, 15, 30, 20]; // Conjunto de datos impar
+      const originalDataset = [...dataset]; // Copia del conjunto original
+      const dataContainer = document.querySelector(".data-container");
+      const table = document.querySelector("table");
+      const mediaResult = document.getElementById("media-result");
+      const medianaResult = document.getElementById("mediana-result");
+      const modaResult = document.getElementById("moda-result");
+
+      let isSorted = false;
+
+      // Mostrar datos desordenados inicialmente
+      dataContainer.innerHTML = `
+        Datos de la encuesta: [<span id="data-values">${dataset.join(", ")}</span>]<br>
+        n = ${dataset.length} (${dataset.length % 2 === 0 ? "par" : "impar"})
+      `;
+
+      // Función para alternar entre ordenar y desordenar los datos
+      document.getElementById("data-values").addEventListener("click", function () {
+        if (isSorted) {
+          // Desordenar los datos (restaurar al original)
+          dataset.sort(() => Math.random() - 0.5);
+        } else {
+          // Ordenar de menor a mayor
+          dataset.sort((a, b) => a - b);
+        }
+        isSorted = !isSorted;
+        // Actualizar solo los datos, manteniendo el enunciado
+        document.getElementById("data-values").textContent = dataset.join(", ");
+        fillTable(); // Actualizar la tabla
+      });
+
+      // Función para llenar la tabla
+      function fillTable() {
+        const uniqueValues = [...new Set(dataset)].sort((a, b) => a - b);
+        const frequencies = uniqueValues.map(value => dataset.filter(num => num === value).length);
+        const n = dataset.length;
+
+        // Limpiar la tabla
+        table.innerHTML = `
+          <tr>
+            <th>x</th>
+            <th>f</th>
+            <th>F</th>
+            <th>x·f</th>
+            <th>fr</th>
+            <th>%</th>
+          </tr>
+        `;
+
+        let cumulative = 0;
+        let totalFValue = 0;
+        let totalXfValue = 0;
+        let totalFr = 0;
+        let totalPercent = 0;
+
+        uniqueValues.forEach((value, index) => {
+          const row = document.createElement("tr");
+          const xf = value * frequencies[index];
+          cumulative += frequencies[index];
+          totalFValue += frequencies[index];
+          totalXfValue += xf;
+          const fr = (frequencies[index] / n).toFixed(2); // Frecuencia relativa
+          const percent = (fr * 100).toFixed(2); // Porcentaje
+          totalFr += parseFloat(fr);
+          totalPercent += parseFloat(percent);
+
+          row.innerHTML = `
+            <td><div class="cell-content">${value}</div></td>
+            <td><div class="cell-content">${frequencies[index]}</div></td>
+            <td><div class="cell-content">${cumulative}</div></td>
+            <td><div class="cell-content">${xf}</div></td>
+            <td><div class="cell-content">${fr}</div></td>
+            <td><div class="cell-content">${percent}%</div></td>
+          `;
+          table.appendChild(row);
+        });
+
+        // Agregar fila de totales
+        const totalRow = document.createElement("tr");
+        totalRow.innerHTML = `
+          <td><strong>Total</strong></td>
+          <td><div class="cell-content"><strong>${totalFValue}</strong></div></td>
+          <td></td>
+          <td><div class="cell-content"><strong>${totalXfValue}</strong></div></td>
+          <td><div class="cell-content"><strong>1.00</strong></div></td>
+          <td><div class="cell-content"><strong>100%</strong></div></td>
+        `;
+        table.appendChild(totalRow);
+
+        // Agregar evento de clic a las celdas de la tabla (incluyendo la fila de totales)
+        const cells = table.querySelectorAll("td .cell-content");
+        cells.forEach(cell => {
+          cell.addEventListener("click", function () {
+            this.classList.toggle("highlight"); // Alternar la clase highlight
+          });
+        });
+
+        // Calcular y mostrar resultados
+        calcularResultados();
+      }
+
+      // Función para calcular y mostrar resultados
+      function calcularResultados() {
+        const sortedData = [...dataset].sort((a, b) => a - b);
+        const n = sortedData.length;
+
+        // Calcular la media
+        const sum = dataset.reduce((a, b) => a + b, 0);
+        const media = (sum / n).toFixed(2);
+        mediaResult.innerHTML = `Media: <strong class="highlight">${media}</strong>`;
+
+        // Calcular la mediana
+        const mid = Math.floor(n / 2);
+        const mediana = sortedData[mid]; // Para datos impares, la mediana es el valor central
+        medianaResult.innerHTML = `Mediana: <strong class="highlight">${mediana}</strong>`;
+
+        // Calcular la moda
+        const frequency = {};
+        dataset.forEach(num => frequency[num] = (frequency[num] || 0) + 1);
+        const maxFreq = Math.max(...Object.values(frequency));
+        const modas = Object.keys(frequency).filter(num => frequency[num] === maxFreq);
+        const tipoModa = modas.length === 1 ? "Unimodal" : modas.length === 2 ? "Bimodal" : "Multimodal";
+        modaResult.innerHTML = `Moda: <strong class="highlight">${modas.join(", ")}</strong> (${tipoModa})`;
+      }
+
+      // Llenar la tabla inicialmente
+      fillTable();
+
+      // Evento para borrar selecciones al hacer clic fuera de la tabla
+      document.addEventListener("click", function (event) {
+        if (!table.contains(event.target)) {
+          // Si el clic fue fuera de la tabla, borrar todas las selecciones
+          const highlightedCells = document.querySelectorAll(".highlight");
+          highlightedCells.forEach(cell => {
+            cell.classList.remove("highlight");
+          });
+        }
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <div class="slide">
+    <div class="title">Medidas de Tendencia Central (Datos Impares)</div>
+    <div class="content">
+      <div class="data-container"></div>
+      <table></table>
+      <div class="results">
+        <div id="media-result">Media: <strong class="highlight">0.00</strong></div>
+        <div id="mediana-result">Mediana: <strong class="highlight">0.00</strong></div>
+        <div id="moda-result">Moda: <strong class="highlight">0.00</strong></div>
+      </div>
+    </div>
+    <div class="buttons">
+      <a href="./11.html">Atrás</a>
+      <a href="./13.html">Siguiente</a>
+    </div>
+  </div>
+</body>
+
+</html>

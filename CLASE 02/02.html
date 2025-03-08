@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Población Estadística</title>
+  <title>Medidas de Tendencia Central</title>
+  <link rel="shortcut icon" href="../Code.ico" type="image/x-icon">
   <style>
     * {
       margin: 0;
@@ -60,8 +61,8 @@
     }
 
     .image::before {
-      content: '\1F465';
-      /* Emoji de grupo de personas */
+      content: '\1F4C8';
+      /* Emoji de gráfico de tendencias */
       font-size: 100px;
       color: white;
     }
@@ -79,24 +80,12 @@
 
     .text li {
       margin-bottom: 15px;
-      /* Mayor separación entre elementos */
-      padding-left: 30px;
-      /* Espacio para la viñeta */
-      position: relative;
-    }
-
-    .text li::before {
-      content: '\1F4C8';
-      /* Emoji de gráfico */
-      position: absolute;
-      left: 0;
-      top: 0;
-      font-size: 18px;
     }
 
     .text li strong {
-      font-weight: bold;
-      /* Resalta el texto en negrita */
+      display: block;
+      font-size: 20px;
+      margin-bottom: 5px;
     }
 
     .buttons {
@@ -156,16 +145,27 @@
 
 <body>
   <div class="slide">
-    <div class="title">Población Estadística</div>
+    <div class="title">Medidas de Tendencia Central</div>
     <div class="content">
       <div class="image"></div>
       <div class="text">
         <ul>
-          <li>La población estadística es el conjunto total de elementos que se analizan en un estudio.
+          <li>
+            <strong>Definición:</strong>
+            Son valores que representan el centro de un conjunto de datos.
           </li>
-          <li><strong>Ejemplo:</strong> Todos los estudiantes de una universidad.</li>
-          <li><strong>Ejemplo:</strong> Todos los clientes de un supermercado en un mes.</li>
-          <li><strong>Ejemplo:</strong> Todos los dispositivos móviles vendidos en un año.</li>
+          <li>
+            <strong>Utilidad:</strong>
+            Ayudan a resumir y entender la distribución de los datos.
+          </li>
+          <li>
+            <strong>¿Cuáles son?</strong>
+            <ul style="list-style: none; padding-left: 20px;">
+              <li>📊 Media</li>
+              <li>📈 Mediana</li>
+              <li>📉 Moda</li>
+            </ul>
+          </li>
         </ul>
       </div>
     </div>
