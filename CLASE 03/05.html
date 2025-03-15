@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gráfico de Barras: Hijos por Familia</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #fcb9b9;
+      padding: 10px;
+    }
+
+    .slide {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 700px;
+      text-align: center;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .content {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 20px;
+    }
+
+    .table-container {
+      width: 35%;
+      min-width: 150px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .chart-container {
+      width: 65%;
+      height: 280px;
+      position: relative;
+      border-left: 2px solid #202020;
+      border-bottom: 2px solid #202020;
+      background: repeating-linear-gradient(90deg,
+          transparent 0,
+          transparent 34px,
+          #ddd 35px),
+        repeating-linear-gradient(0deg,
+          transparent 0,
+          transparent 49px,
+          #ddd 50px);
+    }
+
+    .bar {
+      width: 28px;
+      position: absolute;
+      bottom: 0;
+      transform: translateX(-50%);
+      transition: height 0.3s ease;
+      border-radius: 3px 3px 0 0;
+    }
+
+    .axis-values {
+      position: absolute;
+      font-size: 12px;
+      color: #272727;
+    }
+
+    .x-axis-values {
+      bottom: -25px;
+      transform: translateX(-50%);
+      font-weight: bold;
+    }
+
+    .y-axis-values {
+      left: -25px;
+      transform: translateY(50%);
+      font-weight: bold;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .buttons a {
+      text-decoration: none;
+      background: #007BFF;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+
+    @media (max-width: 600px) {
+      .slide {
+        background: white;
+        padding: 20px 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        text-align: center;
+      }
+
+      .content {
+        flex-direction: column;
+        gap: 15px;
+        padding: 10px;
+        width: 100%;
+      }
+
+      .table-container,
+      .chart-container {
+        width: 100%;
+      }
+
+      .chart-container {
+        height: 220px;
+        margin-top: 15px;
+        margin-bottom: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="slide">
+    <div class="title">Distribución de Hijos por Familia</div>
+    <div class="content">
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Hijos (X)</th>
+              <th>Familias (f)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>0</td>
+              <td>10</td>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>20</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>30</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>25</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>15</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="chart-container" id="chart"></div>
+    </div>
+
+    <div class="buttons">
+      <a href="./04.html">Atrás</a>
+      <a href="./06.html">Siguiente</a>
+    </div>
+  </div>
+
+  <script>
+    const data = [
+      { x: 0, f: 10 },
+      { x: 1, f: 20 },
+      { x: 2, f: 30 },
+      { x: 3, f: 25 },
+      { x: 4, f: 15 }
+    ];
+
+    const colors = ['#4CAF50', '#2196F3', '#FF9800', '#9C27B0', '#E91E63'];
+    const chart = document.getElementById('chart');
+
+    data.forEach((item, index) => {
+      const bar = document.createElement('div');
+      bar.className = 'bar';
+      bar.style.height = `${item.f * 5}px`;
+      bar.style.left = `${40 + (index * 50)}px`;
+      bar.style.backgroundColor = colors[index];
+      chart.appendChild(bar);
+
+      const xLabel = document.createElement('div');
+      xLabel.className = 'axis-values x-axis-values';
+      xLabel.style.left = `${40 + (index * 50)}px`;
+      xLabel.innerText = item.x;
+      chart.appendChild(xLabel);
+    });
+
+    for (let i = 0; i <= 40; i += 10) {
+      const yLabel = document.createElement('div');
+      yLabel.className = 'axis-values y-axis-values';
+      yLabel.style.bottom = `${i * 5}px`;
+      yLabel.innerText = i;
+      chart.appendChild(yLabel);
+    }
+  </script>
+</body>
+
+</html>

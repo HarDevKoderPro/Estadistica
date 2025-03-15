@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gráfico Circular</title>
+  <link rel="shortcut icon" href="../Code.ico" type="image/x-icon">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #fcb9b9;
+    }
+
+    .slide {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+      width: 80%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .image {
+      width: 30%;
+      height: 200px;
+      background-color: #FF9800;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .image::before {
+      content: '\1F4C8';
+      /* Emoji de gráfico de líneas */
+      font-size: 100px;
+      color: white;
+    }
+
+    .text {
+      width: 50%;
+      font-size: 18px;
+      text-align: left;
+    }
+
+    .text ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .text li {
+      margin-bottom: 15px;
+    }
+
+    .text li strong {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+
+    .buttons {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .buttons a {
+      text-decoration: none;
+      background: #007BFF;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        height: auto;
+        min-height: 100vh;
+        padding: 10px 0;
+        display: block;
+      }
+
+      .slide {
+        width: 90%;
+        margin: auto;
+        min-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-bottom: 10px;
+      }
+
+      .content {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .image,
+      .text {
+        width: 100%;
+      }
+
+      .image {
+        height: 180px;
+      }
+
+      .buttons {
+        margin-top: 10px;
+        padding-bottom: 5px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="slide">
+    <div class="title">Gráfico Circular</div>
+    <div class="content">
+      <div class="image"></div>
+      <div class="text">
+        <strong>Definición:</strong>
+        <p>Es una representación gráfica en forma de círculo dividido en sectores, donde cada sector representa una
+          proporción o porcentaje de un conjunto de datos.</p><br>
+
+        <strong>Campos necesarios:</strong>
+        <p>Se utilizan los valores de <strong>x</strong> (datos) y el ángulo de cada sector, que se calcula con la
+          fórmula: <br>
+          <code>Ángulo = (Porcentaje * 3.60°) </code>
+        </p>
+        <br>
+
+        <strong>Utilidad:</strong>
+        <p>Es ideal para mostrar la composición de un todo, permitiendo visualizar rápidamente la proporción de cada
+          categoría en relación con el total.</p>
+      </div>
+    </div>
+    <div class="buttons">
+      <a href="./07.html">Atrás</a>
+      <a href="./09.html">Siguiente</a>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -194,7 +194,7 @@
   </style>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      const dataset = [14, 22, 18, 25, 14, 30, 18]; // Conjunto de datos impar
+      const dataset = [12, 15, 18, 20, 12, 25, 18, 30, 22, 15]; // Conjunto de datos par (n = 10)
       const originalDataset = [...dataset]; // Copia del conjunto original
       const dataContainer = document.querySelector(".data-container");
       const table = document.querySelector("table");
@@ -206,7 +206,7 @@
 
       // Mostrar datos desordenados inicialmente
       dataContainer.innerHTML = `
-        Edades de los participantes:\n[<span id="data-values">${dataset.join(", ")}</span>]<br>
+        Calificaciones de los estudiantes:\n[<span id="data-values">${dataset.join(", ")}</span>]<br>
         n = ${dataset.length} (${dataset.length % 2 === 0 ? "par" : "impar"})
       `;
 
@@ -246,8 +246,8 @@
         let totalFr = 0;
         let totalPercent = 0;
 
-        // Valores exactos de fr
-        const frValues = [0.285, 0.142, 0.285, 0.142, 0.142]; // Valores predefinidos
+        // Calcular frecuencias relativas
+        const frValues = frequencies.map(f => (f / n).toFixed(3)); // Frecuencia relativa con 3 decimales
 
         uniqueValues.forEach((value, index) => {
           const row = document.createElement("tr");
@@ -255,9 +255,9 @@
           cumulative += frequencies[index];
           totalFValue += frequencies[index];
           totalXfValue += xf;
-          const fr = frValues[index]; // Usar valores predefinidos de fr
+          const fr = frValues[index]; // Usar valores calculados de fr
           const percent = (fr * 100).toFixed(1); // Porcentaje con 1 decimal
-          totalFr += fr;
+          totalFr += parseFloat(fr);
           totalPercent += parseFloat(percent);
 
           row.innerHTML = `
@@ -265,7 +265,7 @@
             <td><div class="cell-content">${frequencies[index]}</div></td>
             <td><div class="cell-content">${cumulative}</div></td>
             <td><div class="cell-content">${xf}</div></td>
-            <td><div class="cell-content">${fr.toFixed(3)}</div></td>
+            <td><div class="cell-content">${fr}</div></td>
             <td><div class="cell-content">${percent}%</div></td>
           `;
           table.appendChild(row);
@@ -305,9 +305,9 @@
         const media = (sum / n).toFixed(2);
         mediaResult.innerHTML = `Media: <strong>${media}</strong>`;
 
-        // Calcular la mediana
-        const mid = Math.floor(n / 2);
-        const mediana = sortedData[mid]; // Para datos impares, la mediana es el valor central
+        // Calcular la mediana (para datos pares)
+        const mid = n / 2;
+        const mediana = ((sortedData[mid - 1] + sortedData[mid]) / 2).toFixed(2);
         medianaResult.innerHTML = `Mediana: <strong>${mediana}</strong>`;
 
         // Calcular la moda
@@ -343,14 +343,14 @@
       <div class="data-container"></div>
       <table></table>
       <div class="results">
-        <div id="media-result">Media: <strong>20.14</strong></div>
-        <div id="mediana-result">Mediana: <strong>18</strong></div>
-        <div id="moda-result">Moda: <strong>14, 18</strong></div>
+        <div id="media-result">Media: <strong>0.00</strong></div>
+        <div id="mediana-result">Mediana: <strong>0.00</strong></div>
+        <div id="moda-result">Moda: <strong>0.00</strong></div>
       </div>
     </div>
     <div class="buttons">
-      <a href="../index.html">Atrás</a>
-      <a href="./02.html">Siguiente</a>
+      <a href="./01.html">Atrás</a>
+      <a href="./03.html">Siguiente</a>
     </div>
   </div>
 </body>

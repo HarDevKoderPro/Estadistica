@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gráfico de Barras: Hijos por Familia</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #fcb9b9;
+      padding: 10px;
+    }
+
+    .slide {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 700px;
+      text-align: center;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .content {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 20px;
+    }
+
+    .table-container {
+      width: 35%;
+      min-width: 150px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .chart-container {
+      width: 65%;
+      height: 280px;
+      position: relative;
+      border-left: 2px solid #202020;
+      border-bottom: 2px solid #202020;
+      background: repeating-linear-gradient(90deg,
+          transparent 0,
+          transparent 34px,
+          #ddd 35px),
+        repeating-linear-gradient(0deg,
+          transparent 0,
+          transparent 49px,
+          #ddd 50px);
+    }
+
+    .bar {
+      width: 28px;
+      position: absolute;
+      bottom: 0;
+      transform: translateX(-50%);
+      transition: height 0.3s ease;
+      border-radius: 3px 3px 0 0;
+    }
+
+    .axis-values {
+      position: absolute;
+      font-size: 12px;
+      color: #272727;
+    }
+
+    .x-axis-values {
+      bottom: -25px;
+      transform: translateX(-50%);
+      font-weight: bold;
+    }
+
+    .y-axis-values {
+      left: -25px;
+      transform: translateY(50%);
+      font-weight: bold;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .buttons a {
+      text-decoration: none;
+      background: #007BFF;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+
+    .point {
+      width: 8px;
+      height: 8px;
+      background: red;
+      border-radius: 50%;
+      position: absolute;
+      transform: translate(-50%, 50%);
+      z-index: 3;
+    }
+
+    .polygon {
+      stroke: red;
+      stroke-width: 2;
+      fill: none;
+    }
+
+    @media (max-width: 600px) {
+      .slide {
+        padding: 15px;
+      }
+
+      .content {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .table-container,
+      .chart-container {
+        width: 100%;
+      }
+
+      .chart-container {
+        width: 70%;
+        /* Ocupa todo el ancho disponible */
+        height: 250px;
+        /* Aumentamos la altura */
+        background: repeating-linear-gradient(90deg,
+            transparent 0,
+            transparent 24px,
+            #ddd 25px),
+          repeating-linear-gradient(0deg,
+            transparent 0,
+            transparent 34px,
+            #ddd 35px);
+        margin: 0 auto;
+        /* Centrar el gráfico */
+        margin-bottom: 15px;
+
+      }
+
+      .bar {
+        width: 24px;
+        /* Ajustamos el ancho de las barras */
+      }
+
+      .point {
+        width: 6px;
+        height: 6px;
+      }
+
+      .axis-values {
+        font-size: 10px;
+      }
+
+      .x-axis-values {
+        bottom: -20px;
+      }
+
+      .y-axis-values {
+        left: -20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="slide">
+    <div class="title">Distribución de Hijos por Familia</div>
+    <div class="content">
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Hijos (X)</th>
+              <th>Familias (f)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>0</td>
+              <td>10</td>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>20</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>30</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>25</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>15</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="chart-container" id="chart"></div>
+    </div>
+
+    <div class="buttons">
+      <a href="./06.html">Atrás</a>
+      <a href="./08.html">Siguiente</a>
+    </div>
+  </div>
+
+  <script>
+    const data = [
+      { x: 0, f: 10 },
+      { x: 1, f: 20 },
+      { x: 2, f: 30 },
+      { x: 3, f: 25 },
+      { x: 4, f: 15 }
+    ];
+
+    const colors = ['#4CAF50', '#2196F3', '#FF9800', '#9C27B0', '#E91E63'];
+    const chart = document.getElementById('chart');
+
+    let points = '';
+
+    const isMobile = window.innerWidth <= 600; // Verificar si es móvil
+    const barWidth = isMobile ? 24 : 28; // Ancho de las barras según el dispositivo
+    const barSpacing = isMobile ? 30 : 50; // Espaciado entre barras según el dispositivo
+    const chartHeight = isMobile ? 250 : 280; // Altura del gráfico según el dispositivo
+
+    data.forEach((item, index) => {
+      const xPos = 30 + (index * barSpacing); // Ajuste de posición X para móvil
+      const yPos = item.f * (isMobile ? 5 : 5); // Ajuste de altura para móvil
+
+      // Crear barras
+      const bar = document.createElement('div');
+      bar.className = 'bar';
+      bar.style.height = `${yPos}px`;
+      bar.style.left = `${xPos}px`;
+      bar.style.backgroundColor = colors[index];
+      chart.appendChild(bar);
+
+      // Crear puntos rojos
+      const point = document.createElement('div');
+      point.className = 'point';
+      point.style.left = `${xPos}px`;
+      point.style.bottom = `${yPos}px`;
+      chart.appendChild(point);
+
+      // Coordenadas para el polígono
+      points += `${xPos},${chartHeight - yPos} `;
+
+      // Etiquetas del eje X
+      const xLabel = document.createElement('div');
+      xLabel.className = 'axis-values x-axis-values';
+      xLabel.style.left = `${xPos}px`;
+      xLabel.innerText = item.x;
+      chart.appendChild(xLabel);
+    });
+
+    // Etiquetas del eje Y
+    for (let i = 0; i <= 40; i += 10) {
+      const yLabel = document.createElement('div');
+      yLabel.className = 'axis-values y-axis-values';
+      yLabel.style.bottom = `${i * (isMobile ? 5 : 5)}px`;
+      yLabel.innerText = i;
+      chart.appendChild(yLabel);
+    }
+
+    // Dibujar el polígono de frecuencias
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('width', '100%');
+    svg.setAttribute('height', '100%');
+    svg.style.position = 'absolute';
+    svg.style.top = '0';
+    svg.style.left = '0';
+    svg.innerHTML = `<polyline class="polygon" points="${points}"/>`;
+    chart.appendChild(svg);
+  </script>
+</body>
+
+</html>

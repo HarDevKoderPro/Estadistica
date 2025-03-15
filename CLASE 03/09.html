@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gráfico Circular: Hijos por Familia</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #fcb9b9;
+      padding: 10px;
+    }
+
+    .slide {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 800px;
+      text-align: center;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .content {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 20px;
+    }
+
+    .table-container {
+      width: 40%;
+      min-width: 200px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .chart-container {
+      width: 60%;
+      height: 300px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .pie-chart {
+      width: 200px;
+      height: 200px;
+    }
+
+    .chart-text {
+      font-size: 12px;
+      fill: black;
+      /* Texto en negro */
+      font-weight: bold;
+      text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+      /* Sombra blanca para contraste */
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .buttons a {
+      text-decoration: none;
+      background: #007BFF;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+
+    @media (max-width: 600px) {
+      .slide {
+        padding: 20px 30px;
+      }
+
+      .content {
+        flex-direction: column;
+      }
+
+      .table-container,
+      .chart-container {
+        width: 100%;
+      }
+
+      .chart-container {
+        height: 250px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="slide">
+    <div class="title">Distribución de Hijos por Familia</div>
+    <div class="content">
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Hijos (X)</th>
+              <th>Familias (f)</th>
+              <th>fr</th>
+              <th>%</th>
+              <th>Ángulo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>0</td>
+              <td>10</td>
+              <td>0.10</td>
+              <td>10%</td>
+              <td>36°</td>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>20</td>
+              <td>0.20</td>
+              <td>20%</td>
+              <td>72°</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>30</td>
+              <td>0.30</td>
+              <td>30%</td>
+              <td>108°</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>25</td>
+              <td>0.25</td>
+              <td>25%</td>
+              <td>90°</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>15</td>
+              <td>0.15</td>
+              <td>15%</td>
+              <td>54°</td>
+            </tr>
+            <tr>
+              <td><strong>Total</strong></td>
+              <td><strong>100</strong></td>
+              <td><strong>1.00</strong></td>
+              <td><strong>100%</strong></td>
+              <td><strong>360°</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="chart-container">
+        <svg class="pie-chart" id="pieChart" viewBox="0 0 200 200"></svg>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <a href="./08.html">Atrás</a>
+      <a href="./10.html">Siguiente</a>
+    </div>
+  </div>
+
+  <script>
+    const data = [
+      { x: 0, f: 10, percent: 10, angle: 36 },
+      { x: 1, f: 20, percent: 20, angle: 72 },
+      { x: 2, f: 30, percent: 30, angle: 108 },
+      { x: 3, f: 25, percent: 25, angle: 90 },
+      { x: 4, f: 15, percent: 15, angle: 54 }
+    ];
+
+    const colors = ['#4CAF50', '#2196F3', '#FF9800', '#9C27B0', '#E91E63'];
+    const svg = document.getElementById('pieChart');
+    const radius = 90;
+    const center = 100;
+    let currentAngle = -90;
+
+    data.forEach((item, index) => {
+      // Calcular coordenadas del segmento
+      const angle = (item.percent * 360) / 100;
+      const endAngle = currentAngle + angle;
+
+      // Crear path del segmento
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      const x1 = center + radius * Math.cos(currentAngle * Math.PI / 180);
+      const y1 = center + radius * Math.sin(currentAngle * Math.PI / 180);
+      const x2 = center + radius * Math.cos(endAngle * Math.PI / 180);
+      const y2 = center + radius * Math.sin(endAngle * Math.PI / 180);
+
+      const d = `M ${center},${center}
+                L ${x1},${y1}
+                A ${radius},${radius} 0 ${angle > 180 ? 1 : 0} 1 ${x2},${y2}
+                Z`;
+
+      path.setAttribute('d', d);
+      path.setAttribute('fill', colors[index]);
+      svg.appendChild(path);
+
+      // Añadir texto
+      const textAngle = currentAngle + (angle / 2);
+      const textX = center + (radius * 0.6) * Math.cos(textAngle * Math.PI / 180);
+      const textY = center + (radius * 0.6) * Math.sin(textAngle * Math.PI / 180);
+
+      const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      text.setAttribute('x', textX);
+      text.setAttribute('y', textY);
+      text.setAttribute('class', 'chart-text');
+      text.setAttribute('text-anchor', 'middle');
+      text.setAttribute('alignment-baseline', 'middle');
+      text.textContent = `${item.x} (${item.percent}%)`;
+      svg.appendChild(text);
+
+      currentAngle = endAngle;
+    });
+  </script>
+</body>
+
+</html>
