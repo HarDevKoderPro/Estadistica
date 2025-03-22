@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cálculo de la Desviación Estándar</title>
+  <link rel="shortcut icon" href="../Code.ico" type="image/x-icon">
+  <style>
+    /* Estilos anteriores (sin cambios) */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+
+    .slide {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+      width: 80%;
+      max-width: 800px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      position: sticky;
+      top: 0;
+      background: white;
+      z-index: 1;
+      padding: 10px 0;
+      width: 100%;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      overflow-y: auto;
+      flex-grow: 1;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #ffffff;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid #b0b0b0;
+      margin-bottom: 20px;
+    }
+
+    th,
+    td {
+      border: 1px solid #b0b0b0;
+      padding: 8px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    th {
+      background: #4CAF50;
+      color: white;
+      font-size: 16px;
+    }
+
+    tr:nth-child(even) {
+      background: #e8f5e9;
+    }
+
+    tr:nth-child(odd) {
+      background: #f0f0f0;
+    }
+
+    .cell-content {
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+    }
+
+    .highlight {
+      border: 2px solid red;
+      padding: 5px 10px;
+      display: inline-block;
+      background-color: #ffe6e6;
+    }
+
+    .results {
+      width: 100%;
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    .buttons {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .buttons a {
+      text-decoration: none;
+      background: #007BFF;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        height: auto;
+        min-height: 100vh;
+        padding: 10px 0;
+        display: block;
+      }
+
+      .slide {
+        width: 95%;
+        margin: auto;
+        min-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-bottom: 10px;
+      }
+
+      .content {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      table {
+        width: 95%;
+      }
+
+      th,
+      td {
+        padding: 6px;
+        font-size: 12px;
+      }
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Ordenar los valores de x de forma ascendente junto con sus frecuencias correspondientes
+      const xValues = [1, 10, 12, 4, 2, 8];
+      const fValues = [3, 15, 23, 10, 5, 4];
+
+      // Combinar x y f en un array de objetos para ordenar
+      const data = xValues.map((x, i) => ({ x, f: fValues[i] }));
+      data.sort((a, b) => a.x - b.x); // Ordenar por x de forma ascendente
+
+      // Extraer los valores ordenados
+      const sortedXValues = data.map(item => item.x);
+      const sortedFValues = data.map(item => item.f);
+
+      const table = document.querySelector("table");
+      const promedioResult = document.getElementById("promedio-result");
+      const varianzaResult = document.getElementById("varianza-result");
+
+      // Función para calcular la media
+      function calcularMedia() {
+        const n = sortedFValues.reduce((a, b) => a + b, 0); // Total de datos
+        const sumXf = sortedXValues.reduce((acc, x, i) => acc + x * sortedFValues[i], 0); // Sumatoria de x·f
+        return { media: (sumXf / n).toFixed(2), n, sumXf };
+      }
+
+      // Función para llenar la tabla
+      function fillTable() {
+        const { media, n, sumXf } = calcularMedia();
+        table.innerHTML = `
+          <tr>
+            <th>x</th>
+            <th>f</th>
+            <th>x·f</th>
+            <th>(x - x̄)²</th>
+            <th>(x - x̄)²·f</th>
+          </tr>
+        `;
+
+        let totalF = 0;
+        let totalXf = 0;
+        let totalXMenosMediaCuadradoF = 0;
+
+        sortedXValues.forEach((x, i) => {
+          const f = sortedFValues[i];
+          const xf = x * f; // x·f
+          const xMenosMediaCuadrado = Math.pow(x - media, 2).toFixed(2); // (x - x̄)²
+          const xMenosMediaCuadradoF = (xMenosMediaCuadrado * f).toFixed(2); // (x - x̄)²·f
+
+          totalF += f;
+          totalXf += xf;
+          totalXMenosMediaCuadradoF += parseFloat(xMenosMediaCuadradoF);
+
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td><div class="cell-content">${x}</div></td>
+            <td><div class="cell-content">${f}</div></td>
+            <td><div class="cell-content">${xf}</div></td>
+            <td><div class="cell-content">${xMenosMediaCuadrado}</div></td>
+            <td><div class="cell-content">${xMenosMediaCuadradoF}</div></td>
+          `;
+          table.appendChild(row);
+        });
+
+        // Fila de totales (resaltada en rojo)
+        const totalRow = document.createElement("tr");
+        totalRow.innerHTML = `
+          <td><strong>Total</strong></td>
+          <td><div class="cell-content highlight"><strong>${totalF}</strong></div></td>
+          <td><div class="cell-content highlight"><strong>${totalXf}</strong></div></td>
+          <td><div class="cell-content"></div></td>
+          <td><div class="cell-content highlight"><strong>${totalXMenosMediaCuadradoF.toFixed(2)}</strong></div></td>
+        `;
+        table.appendChild(totalRow);
+
+        // Mostrar desarrollo del promedio
+        promedioResult.innerHTML = `
+          <strong>Promedio (x̄):</strong><br>
+          x̄ = Σ(x·f) / n = ${sumXf} / ${n} = <strong class="highlight">${media}</strong>
+        `;
+
+        // Mostrar desarrollo de la varianza
+        const varianza = (totalXMenosMediaCuadradoF / n).toFixed(2);
+        varianzaResult.innerHTML = `
+          <strong>Varianza (σ²):</strong><br>
+          σ² = Σ(x - x̄)²·f / n = ${totalXMenosMediaCuadradoF.toFixed(2)} / ${n} = <strong class="highlight">${varianza}</strong>
+        `;
+
+        // Calcular y mostrar desarrollo de la desviación estándar
+        const desviacionEstandar = Math.sqrt(varianza).toFixed(2);
+        const desviacionResult = document.createElement("div");
+        desviacionResult.innerHTML = `
+          <strong>Desviación estándar (σ):</strong><br>
+          σ = √σ² = √${varianza} = <strong class="highlight">${desviacionEstandar}</strong>
+        `;
+        document.querySelector(".results").appendChild(desviacionResult);
+
+        // Evento para resaltar celdas
+        const cells = table.querySelectorAll("td .cell-content");
+        cells.forEach(cell => {
+          cell.addEventListener("click", function () {
+            this.classList.toggle("highlight");
+          });
+        });
+      }
+
+      fillTable();
+    });
+  </script>
+</head>
+
+<body>
+  <div class="slide">
+    <div class="title">Cálculo de la Desviación Estándar</div>
+    <div class="content">
+      <table></table>
+      <div class="results">
+        <div id="promedio-result"></div>
+        <div id="varianza-result"></div>
+      </div>
+    </div>
+    <div class="buttons">
+      <a href="./06.html">Atrás</a>
+      <a href="./08.html">Siguiente</a>
+    </div>
+  </div>
+</body>
+
+</html>

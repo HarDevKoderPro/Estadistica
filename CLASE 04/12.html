@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Espacio Muestral</title>
+  <link rel="shortcut icon" href="../Code.ico" type="image/x-icon">
+  <style>
+    /* Estilos idénticos al código original (no se modifican) */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #fcb9b9;
+    }
+
+    .slide {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+      width: 80%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin: 30px auto;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .image {
+      width: 30%;
+      height: 200px;
+      background-color: #4CAF50;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .image::before {
+      content: '\1F3B2';
+      /* Cambio de ícono a un dado */
+      font-size: 100px;
+      color: white;
+    }
+
+    .text {
+      width: 50%;
+      font-size: 18px;
+      text-align: left;
+    }
+
+    .text ul {
+      list-style: disc;
+      padding-left: 20px;
+    }
+
+    .text li {
+      margin-bottom: 15px;
+    }
+
+    .text li strong {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+
+    .buttons {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .buttons a {
+      text-decoration: none;
+      background: #007BFF;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        height: auto;
+        min-height: 100vh;
+        padding: 10px 0;
+        display: block;
+      }
+
+      .slide {
+        width: 95%;
+        margin: auto;
+        min-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-bottom: 10px;
+      }
+
+      .content {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .image,
+      .text {
+        width: 100%;
+      }
+
+      .image {
+        height: 180px;
+      }
+
+      .buttons {
+        margin-top: 10px;
+        padding-bottom: 5px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="slide">
+    <div class="title">Espacio Muestral</div>
+    <div class="content">
+      <div class="image"></div>
+      <div class="text">
+        <strong>Definición:</strong>
+        <p>El espacio muestral es el conjunto de todos los resultados posibles de un experimento aleatorio. Se denota
+          comúnmente con la letra <strong>S</strong>.</p><br>
+
+        <strong>Aplicación:</strong>
+        <p>Es fundamental en probabilidad para definir eventos y calcular probabilidades. Permite identificar todos los
+          escenarios posibles en un experimento.</p><br>
+
+        <strong>Ejemplos:</strong><br><br>
+        <ul>
+          <li><strong>Ejemplo 1: Lanzar un dado</strong><br>
+            - Espacio muestral: <strong>S = {1, 2, 3, 4, 5, 6}</strong><br>
+            - Desarrollo: Un dado tiene 6 caras, cada una con un número del 1 al 6.
+          </li>
+          <li><strong>Ejemplo 2: Lanzar una moneda</strong><br>
+            - Espacio muestral: <strong>S = {Cara, Cruz}</strong><br>
+            - Desarrollo: Una moneda tiene dos resultados posibles: Cara o Cruz.
+          </li>
+        </ul>
+
+        <strong>Resolución paso a paso:</strong><br><br>
+        <p>
+          1. Identificar el experimento aleatorio.<br>
+          2. Listar todos los resultados posibles.<br>
+          3. Definir el espacio muestral como el conjunto de esos resultados.<br>
+          <em>Ejemplo 1:</em> Lanzar un dado → S = {1, 2, 3, 4, 5, 6}.<br>
+          <em>Ejemplo 2:</em> Lanzar una moneda → S = {Cara, Cruz}.<br>
+        </p>
+      </div>
+    </div>
+    <div class="buttons">
+      <a href="./11.html">Atrás</a>
+      <a href="./13.html">Siguiente</a>
+    </div>
+  </div>
+</body>
+
+</html>
